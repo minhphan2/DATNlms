@@ -1,0 +1,212 @@
+CREATE DATABASE lms_full;
+USE lms_full;
+
+-- =========================
+-- 1. USERS
+-- =========================
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    full_name VARCHAR(255),
+    email VARCHAR(255) UNIQUE,
+    password VARCHAR(255),
+    role ENUM('admin','teacher','student'),
+    phone VARCHAR(20),
+    avatar VARCHAR(255),
+    status ENUM('active','inactive') DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- =========================
+-- 2. COURSES
+-- =========================
+CREATE TABLE courses (
+    course_id INT AUTO_INCREMENT PRIMARY KEY,
+    teacher_id INT,
+    title VARCHAR(255),
+    description TEXT,
+    category VARCHAR(255),
+    thumbnail VARCHAR(255),
+    status ENUM('active','inactive') DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (teacher_id) REFERENCES users(user_id)
+);
+
+-- =========================
+-- 3. COURSE ENROLLMENT
+-- =========================
+CREATE TABLE enrollments (
+    enrollment_id INT AUTO_INCREMENT PRIMARY KEY,
+    course_id INT,
+    student_id INT,
+    enrolled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (course_id) REFERENCES courses(course_id),
+    FOREIGN KEY (student_id) REFERENCES users(user_id)
+);
+
+-- =========================
+-- 4. SECTIONS (Chương)
+-- =========================
+CREATE TABLE sections (
+    section_id INT AUTO_INCREMENT PRIMARY KEY,
+    course_id INT,
+    title VARCHAR(255),
+    position INT,
+    FOREIGN KEY (course_id) REFERENCES courses(course_id)
+);
+
+-- =========================
+-- 5. LESSONS (Bài học)
+-- =========================
+CREATE TABLE lessons (
+    lesson_id INT AUTO_INCREMENT PRIMARY KEY,
+    section_id INT,
+    title VARCHAR(255),
+    content TEXT,
+    video_url VARCHAR(255),
+    position INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (section_id) REFERENCES sections(section_id)
+);
+
+-- =========================
+-- 6. MATERIALS (Tài liệu)
+-- =========================
+CREATE TABLE materials (
+    material_id INT AUTO_INCREMENT PRIMARY KEY,
+    lesson_id INT,
+    file_name VARCHAR(255),
+    file_url VARCHAR(255),
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (lesson_id) REFERENCES lessons(lesson_id)
+);
+
+-- =========================
+-- 7. ASSIGNMENTS (Bài tập)
+-- =========================
+CREATE TABLE assignments (
+    assignment_id INT AUTO_INCREMENT PRIMARY KEY,
+    course_id INT,
+    title VARCHAR(255),
+    instructions TEXT,
+    deadline DATETIME,
+    max_score INT DEFAULT 100,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (course_id) REFERENCES courses(course_id)
+);
+
+-- =========================
+-- 8. SUBMISSIONS (Bài nộp)
+-- =========================
+CREATE TABLE submissions (
+    submission_id INT AUTO_INCREMENT PRIMARY KEY,
+    assignment_id INT,
+    student_id INT,
+    file_url VARCHAR(255),
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    score INT,
+    feedback TEXT,
+    FOREIGN KEY (assignment_id) REFERENCES assignments(assignment_id),
+    FOREIGN KEY (student_id) REFERENCES users(user_id)
+);
+
+-- =========================
+-- 9. QUIZZES
+-- =========================
+CREATE TABLE quizzes (
+    quiz_id INT AUTO_INCREMENT PRIMARY KEY,
+    course_id INT,
+    title VARCHAR(255),
+    time_limit INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (course_id) REFERENCES courses(course_id)
+);
+
+-- =========================
+-- 10. QUESTIONS
+-- =========================
+CREATE TABLE questions (
+    question_id INT AUTO_INCREMENT PRIMARY KEY,
+    quiz_id INT,
+    question_text TEXT,
+    type ENUM('single','multiple'),
+    FOREIGN KEY (quiz_id) REFERENCES quizzes(quiz_id)
+);
+
+-- =========================
+-- 11. ANSWERS
+-- =========================
+CREATE TABLE answers (
+    answer_id INT AUTO_INCREMENT PRIMARY KEY,
+    question_id INT,
+    answer_text TEXT,
+    is_correct BOOLEAN DEFAULT 0,
+    FOREIGN KEY (question_id) REFERENCES questions(question_id)
+);
+
+-- =========================
+-- 12. QUIZ RESULTS
+-- =========================
+CREATE TABLE quiz_results (
+    result_id INT AUTO_INCREMENT PRIMARY KEY,
+    quiz_id INT,
+    student_id INT,
+    score INT,
+    taken_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (quiz_id) REFERENCES quizzes(quiz_id),
+    FOREIGN KEY (student_id) REFERENCES users(user_id)
+);
+
+-- =========================
+-- 13. ATTENDANCE (Điểm danh)
+-- =========================
+CREATE TABLE attendance (
+    attendance_id INT AUTO_INCREMENT PRIMARY KEY,
+    course_id INT,
+    student_id INT,
+    date DATE,
+    status ENUM('present','absent','late'),
+    FOREIGN KEY (course_id) REFERENCES courses(course_id),
+    FOREIGN KEY (student_id) REFERENCES users(user_id)
+);
+
+-- =========================
+-- 14. NOTIFICATIONS
+-- =========================
+CREATE TABLE notifications (
+    notification_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    message TEXT,
+    is_read BOOLEAN DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+-- =========================
+-- 15. CHAT (Teacher <-> Student)
+-- =========================
+CREATE TABLE chat_messages (
+    message_id INT AUTO_INCREMENT PRIMARY KEY,
+    sender_id INT,
+    receiver_id INT,
+    course_id INT,
+    message TEXT,
+    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (sender_id) REFERENCES users(user_id),
+    FOREIGN KEY (receiver_id) REFERENCES users(user_id),
+    FOREIGN KEY (course_id) REFERENCES courses(course_id)
+);
+
+-- =========================
+-- 16. GRADEBOOK (Bảng điểm)
+-- =========================
+CREATE TABLE gradebook (
+    grade_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT,
+    course_id INT,
+    assignment_score FLOAT DEFAULT 0,
+    quiz_score FLOAT DEFAULT 0,
+    final_score FLOAT DEFAULT 0,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES users(user_id),
+    FOREIGN KEY (course_id) REFERENCES courses(course_id)
+);
