@@ -41,6 +41,8 @@ public class ScheduleController {
         return ResponseEntity.ok(scheduleService.findByCourseId(courseid));
     }
 
+    
+
     @PostMapping
     public ResponseEntity<ScheduleResponse>createSchedule(@RequestBody CreateRequest request){
         ScheduleResponse scheduleResponse = scheduleService.createSchedule(request);

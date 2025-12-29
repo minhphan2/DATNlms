@@ -20,6 +20,6 @@ public interface MaterialService {
     MaterialResponse findById(Integer id);
     MaterialResponse uploadMaterial(Integer lessonId, MultipartFile file);
     List<MaterialResponse> uploadMultipleMaterials(Integer lessonId, List<MultipartFile> files);
-    
+    List<MaterialResponse> getMaterialsByLessonId(Integer lessonId);
     byte[] downloadMaterial(Integer id);
 } 

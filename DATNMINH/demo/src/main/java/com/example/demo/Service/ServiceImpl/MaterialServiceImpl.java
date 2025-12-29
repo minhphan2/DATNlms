@@ -158,5 +158,11 @@ public class MaterialServiceImpl implements MaterialService {
         };
     }
 
-
+    @Override
+    public List<MaterialResponse> getMaterialsByLessonId(Integer lessonId) {
+        List<Material> materials = materialRepository.findByLessonId(lessonId);
+        return materials.stream()
+                .map(materialMapper::toResponse)
+                .collect(Collectors.toList());
+    }
 }

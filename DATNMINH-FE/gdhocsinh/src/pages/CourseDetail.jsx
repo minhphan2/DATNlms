@@ -1,31 +1,26 @@
-import React from "react";
-import "../assets/CSS/CourseDetail.css";// Bạn nên copy các style vào file này hoặc dùng styled-components
-import { useEffect, useState } from "react";
-import { getCourses, getCoursesById } from "../api/Courseapi.jsx";
+import React, { useEffect, useState } from "react";
+import "../assets/CSS/CourseDetail.css";
+import { getCoursesById } from "../api/Courseapi.jsx";
 import { getSection } from "../api/Sectionapi.jsx";
-import { useParams } from "react-router-dom";
-
-
+import { useParams, useNavigate } from "react-router-dom";
+import Headder from "../components/Headder.jsx";
+import SidebarComponent from "../components/SidebarComponent.jsx";
+import { Icon } from "@iconify/react";
 
 const CourseDetail = () => {
   const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [courses, setCourses] = useState([]);
-  const courseName = courses;
+  const [course, setCourse] = useState({});
   const token = localStorage.getItem('token');
-  const {courseId} = useParams();
+  const { courseId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!courseId) return;
-    // Lấy thông tin course
     getCoursesById(courseId, token)
-      .then((data) => {
-        setCourses(data);
-     // hoặc data.title, tuỳ API trả về
-      })
-      .catch(() => setCourses(""));
+      .then((data) => setCourse(data))
+      .catch(() => setCourse({}));
 
-    // Lấy section
     getSection(token, courseId)
       .then((data) => {
         setSections(data);
@@ -34,127 +29,137 @@ const CourseDetail = () => {
       .catch(() => setLoading(false));
   }, [courseId, token]);
 
-
-
-
-
   return (
-    <div className="page-root">
-      <nav className="top-nav">
-        <div className="nav-left">
-          <a className="nav-link">Home</a>
-          <a className="nav-link">Dashboard</a>
-          <a className="nav-link">My courses</a>
-        </div>
-        <div className="nav-right">
-          <div>
-            <span className="iconify" data-icon="lucide:message-square" style={{ fontSize: 18 }}></span>
+    <div style={{ display: "flex", minHeight: "100vh", background: "#f6faff" }}>
+      <SidebarComponent />
+      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+
+        <div style={{ padding: "32px", height: "100%" }}>
+          {/* Breadcrumbs */}
+          <div style={{ color: "#888", fontSize: 14, marginBottom: 4 }}>
+            <span>Khoa Luật</span> / <span>HK01-22-23-006</span> / <span>{course.title || "Tên khóa học"}</span>
           </div>
-          <div className="user-badge">P</div>
-        </div>
-      </nav>
+          {/* Title */}
+          <div style={{ fontSize: 28, fontWeight: 700, marginBottom: 8 }}>
+            {courseId} - {course.title || "Tên khóa học"}
+          </div>
+          {/* Tabs */}
+          <div style={{ display: "flex", gap: 32, borderBottom: "1px solid #e5eaf2", marginBottom: 16 }}>
+            <div style={{ padding: "8px 0", borderBottom: "2px solid #007bff", color: "#007bff", fontWeight: 600, cursor: "pointer" }}>Course</div>
+            <div style={{ padding: "8px 0", color: "#888", fontWeight: 500, cursor: "pointer" }}>Participants</div>
+            <div style={{ padding: "8px 0", color: "#888", fontWeight: 500, cursor: "pointer" }}>Grades</div>
+            <div style={{ padding: "8px 0", color: "#888", fontWeight: 500, cursor: "pointer" }}>Competencies</div>
+          </div>
 
-      <div className="sub-header">
-        <div className="lang-select">
-          ENGLISH (EN)
-          <span className="iconify" data-icon="lucide:chevron-down" style={{ fontSize: 14 }}></span>
-        </div>
-      </div>
+          {/* Section List Header */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 600, fontSize: 20 }}>
+              <Icon icon="lucide:layers" style={{ color: "#007bff", fontSize: 24 }} />
+              Danh sách chương
+            </div>
+            <div style={{ color: "#007bff", fontWeight: 500, cursor: "pointer" }}>Collapse all</div>
+          </div>
 
-      <div className="content-shell">
-        <div className="main-layout">
-          <aside className="sidebar">
-            <div className="sidebar-close-btn">
-              <span className="iconify" data-icon="lucide:x" style={{ fontSize: 18 }}></span>
-            </div>
-            <div>
-              <div className="sidebar-section-title">
-                <span className="iconify" data-icon="lucide:chevron-down" style={{ fontSize: 16 }}></span>
-                General
-              </div>
-              <ul className="sidebar-list">
-                <li className="sidebar-item">Announcements</li>
-                <li className="sidebar-item">Slides Pháp luật đại cương</li>
-                <li className="sidebar-item">Đề cương-Pháp luật đại cương...</li>
-              </ul>
-            </div>
-          </aside>
-
-          <main className="content-area">
-            <div>
-              <div className="breadcrumbs">
-                <a className="breadcrumb-link">Khoa Luật</a>
-                <span className="breadcrumb-sep">/</span>
-                <a className="breadcrumb-link">Khoa Luật - BM Pháp luật cơ sở</a>
-                <span className="breadcrumb-sep">/</span>
-                <span>HK01-22-23-006</span>
-              </div>
-              <h1 className="page-title">{courseId} - {courses.title}</h1>
-            </div>
-            <div className="tabs">
-              <div className="tab-item active">Course</div>
-              <div className="tab-item">Participants</div>
-              <div className="tab-item">Grades</div>
-              <div className="tab-item">Competencies</div>
-            </div>
-
-            <div className="content-header">
-              <div className="section-name">
-                <span className="iconify" data-icon="lucide:chevron-down" style={{ fontSize: 18 }}></span>
-                Sections
-              </div>
-              <div className="collapse-link">Collapse all</div>
-            </div>
-
-            {loading ? (
-              <div>Loading sections...</div>
-            ) : (
-              <div className="activity-list">
-                {sections.map((section) => (
-                  <div className="activity-card" key={section.id}>
-                    <div className="activity-left">
-                      <div className="activity-icon-box bg-blue">
-                        <span className="iconify" data-icon="lucide:folder" style={{ fontSize: 22 }}></span>
-                      </div>
-                      <div className="activity-details">
-                        <span className="activity-type">{section.type?.toUpperCase() || "SECTION"}</span>
-                        <span className="activity-title">{section.title}</span>
-                        <span className="activity-title">Chương {section.position}</span>
-                      </div>
+          {/* Section List */}
+          {loading ? (
+            <div>Đang tải danh sách chương...</div>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+              {sections.map((section) => (
+                <div
+                  key={section.id}
+                  style={{
+                    background: "#fff",
+                    borderRadius: 12,
+                    boxShadow: "0 2px 8px #eee",
+                    padding: 24,
+                    display: "flex",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    transition: "box-shadow 0.2s",
+                  }}
+                  onClick={() => navigate(`/section/${section.id}`)}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: 20, flex: 1 }}>
+                    <div style={{
+                      width: 48,
+                      height: 48,
+                      background: "#eaf3ff",
+                      borderRadius: 12,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}>
+                      <Icon icon="lucide:folder" style={{ fontSize: 28, color: "#007bff" }} />
                     </div>
-                    {section.canMarkDone && (
-                      <button className="mark-done-btn">Mark as done</button>
-                    )}
+                    <div>
+                      <div style={{ color: "#007bff", fontWeight: 700, fontSize: 16 }}>
+                        {section.type?.toUpperCase() || "SECTION"}
+                      </div>
+                      <div style={{ fontWeight: 600, fontSize: 18 }}>{section.title}</div>
+                      <div style={{ color: "#888", fontSize: 15 }}>Chương {section.position}</div>
+                    </div>
                   </div>
-                ))}
-              </div>
-            )}
-          </main>
+                  {section.canMarkDone && (
+                    <button style={{
+                      background: "#007bff",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: 8,
+                      padding: "8px 20px",
+                      fontWeight: 600,
+                      cursor: "pointer"
+                    }}>
+                      Mark as done
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
-        <footer className="footer">
-          <div className="footer-content">
-            <div className="footer-col">
-              <span className="footer-link">Website Trường</span>
-              <span className="footer-link">Cổng thông tin đào tạo</span>
-              <span className="footer-link">Trang tuyển sinh</span>
-              <span className="footer-link">Moodle.com</span>
-            </div>
-            <div className="footer-col">
-              <span>Số 12, đường Chùa Bộc, Quận Đống Đa, Hà Nội</span>
-              <span>📞 : +84 243 852 1305</span>
-              <span>✉️ : truyenthong@hvnh.edu.vn</span>
-            </div>
-            <div className="footer-col">
-              <div className="social-icon">
-                <span className="iconify" data-icon="lucide:facebook" style={{ fontSize: 18 }}></span>
-              </div>
-            </div>
+        {/* Footer */}
+        <footer style={{
+          textAlign: "center",
+          color: "#888",
+          fontSize: 14,
+          margin: "32px 0 0 0",
+          background: "#fff",
+          borderTop: "1px solid #e5eaf2",
+          padding: "16px 0"
+        }}>
+          <div>
+            <span className="footer-link" style={{ marginRight: 16 }}>Website Trường</span>
+            <span className="footer-link" style={{ marginRight: 16 }}>Cổng thông tin đào tạo</span>
+            <span className="footer-link" style={{ marginRight: 16 }}>Trang tuyển sinh</span>
+            <span className="footer-link">Moodle.com</span>
+          </div>
+          <div style={{ marginTop: 8 }}>
+            Số 12, đường Chùa Bộc, Quận Đống Đa, Hà Nội | 📞 +84 243 852 1305 | ✉️ truyenthong@hvnh.edu.vn
+          </div>
+          <div style={{ marginTop: 8 }}>
+            <Icon icon="lucide:facebook" style={{ fontSize: 18, marginRight: 8 }} />
           </div>
         </footer>
-
-        <div className="floating-help">
-          <span className="iconify" data-icon="lucide:help-circle" style={{ fontSize: 22 }}></span>
+        {/* Floating Help */}
+        <div style={{
+          position: "fixed",
+          bottom: 32,
+          right: 32,
+          background: "#007bff",
+          color: "#fff",
+          borderRadius: "50%",
+          width: 48,
+          height: 48,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          boxShadow: "0 2px 8px #aaa",
+          cursor: "pointer",
+          zIndex: 100
+        }}>
+          <Icon icon="lucide:help-circle" style={{ fontSize: 28 }} />
         </div>
       </div>
     </div>

@@ -3,6 +3,9 @@ import StudentLoginPage from "./pages/StudentLoginPage";
 import StudentDashBoard from "./pages/StudentDashBoard";
 import CourseDetail from "./pages/CourseDetail";
 import ProtectedRoute from "./ProtectedRoute";
+import SectionDetail from "./pages/SectionDetail";
+import MyCourse from "./pages/MyCourse";
+import SchedulePage from "./pages/SchedulePage";
 
 function App() {
   return (
@@ -27,6 +30,33 @@ function App() {
           element={
             <ProtectedRoute>
               <CourseDetail />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/section/:sectionId"
+          element={
+            <ProtectedRoute>
+              <SectionDetail />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="my-courses"
+          element={
+            <ProtectedRoute>
+              <MyCourse />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="schedule"
+          element={
+            <ProtectedRoute>
+              <SchedulePage />
             </ProtectedRoute>
           }
         />

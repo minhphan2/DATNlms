@@ -56,4 +56,12 @@ public class LessonServiceImpl implements LessonService {
         Lesson updatedLesson = lessonRepository.save(lesson);
         return lessonMapper.toResponse(updatedLesson);
     }
+
+    @Override
+    public List<LessonResponse> getLessonsBySectionId(Integer sectionId){
+        List<Lesson> lessons = lessonRepository.findBySectionId(sectionId);
+        return lessons.stream()
+        .map(lessonMapper::toResponse)
+        .collect(Collectors.toList());
+    }
 }

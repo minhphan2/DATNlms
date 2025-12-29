@@ -55,4 +55,11 @@ public class LessonController {
         LessonResponse lessonResponse = lessonService.updateLesson(id,request);
         return ResponseEntity.ok(lessonResponse);
     }
+
+    @GetMapping("/bysection/{sectionId}")
+    public ResponseEntity<List<LessonResponse>> getLessonsBySectionId(@PathVariable Integer sectionId){
+        List<LessonResponse> lessons = lessonService.getLessonsBySectionId(sectionId);
+        return ResponseEntity.ok(lessons);
+    }
+    
 }

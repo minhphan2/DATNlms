@@ -32,6 +32,12 @@ public class MaterialController {
     public ResponseEntity<List<MaterialResponse>> getAllMaterials(){
         return ResponseEntity.ok(materialService.findAll());
     }
+
+    @GetMapping("/bylesson/{lessonId}")
+    public ResponseEntity<List<MaterialResponse>> getMaterialsByLessonId(@PathVariable Integer lessonId)
+    {
+        return ResponseEntity.ok(materialService.getMaterialsByLessonId(lessonId));
+    }
     
     @PostMapping("/upload")
     public ResponseEntity<MaterialResponse> uploadMaterial(

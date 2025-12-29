@@ -15,5 +15,5 @@ public interface LessonService {
     List<LessonResponse> findAll();
     LessonResponse createLesson(CreateRequest request);
     LessonResponse updateLesson(Integer id , UpdateRequest request);
-
+    List <LessonResponse> getLessonsBySectionId(Integer sectionId);
 }
