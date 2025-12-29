@@ -15,4 +15,6 @@ public interface CourseService {
     CourseResponse createCourse(CreateRequest request); 
 
     CourseResponse updateCourse(Integer id, UpdateRequest request);
+
+    CourseResponse getCourseById(Integer id);
 }

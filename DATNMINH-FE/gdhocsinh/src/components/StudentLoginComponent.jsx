@@ -2,12 +2,19 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../api/authapi/Login";
 import '../assets/CSS/StudentLoginPage.css';
+import { useEffect } from "react";
 
 function StudentLoginComponent() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            navigate('/dashboard');
+        }
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

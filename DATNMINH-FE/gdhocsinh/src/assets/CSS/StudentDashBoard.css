@@ -79,9 +79,8 @@
           gap: 16px;
         }
         .logo {
-          height: 48px;
-          width: 48px;
-          background: white;
+          height: 15%;
+          width: 15%;
           border-radius: 50%;
           padding: 4px;
           object-fit: contain;

@@ -15,4 +15,6 @@ public interface SectionService {
     List<SectionResponse>countByCourseIdList(Integer Id);
     SectionResponse createSection(CreateRequest request);
     SectionResponse updateSection(Integer id , UpdateRequest request);
+
+    List<SectionResponse> findbyCourseId (Integer id);
 }

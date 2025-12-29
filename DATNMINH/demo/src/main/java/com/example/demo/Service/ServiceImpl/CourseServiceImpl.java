@@ -64,4 +64,11 @@ public class CourseServiceImpl implements CourseService {
         Course updatedCourse = courseRepository.save(existingCourse);
         return courseMapper.toResponse(updatedCourse);
     }
+
+    @Override
+    public CourseResponse getCourseById(Integer id){
+        Course course = courseRepository.findById(id)
+        .orElseThrow(()-> new RuntimeException("Ko tim thay khoa hoc"));
+        return courseMapper.toResponse(course);
+    }
 }

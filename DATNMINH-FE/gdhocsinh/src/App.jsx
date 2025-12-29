@@ -1,22 +1,39 @@
-
-import StudentLoginPage from './pages/StudentLoginPage.jsx';
-import './assets/CSS/StudentLoginPage.css'
-import {BrowserRouter,Route,Routes} from 'react-router-dom';
-import StudentDashBoard from './pages/StudentDashBoard.jsx';
-import { Navigate } from 'react-router-dom';
-
-
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import StudentLoginPage from "./pages/StudentLoginPage";
+import StudentDashBoard from "./pages/StudentDashBoard";
+import CourseDetail from "./pages/CourseDetail";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Navigate to="/login"/>}/>
-        <Route path='/login' element={<StudentLoginPage/>}/>
-        <Route path='/dashboard' element={localStorage.getItem('token')? <StudentDashBoard/> : <Navigate to="/login" />}/>
+
+        <Route path="/" element={<Navigate to="/login" replace />} />
+
+        <Route path="/login" element={<StudentLoginPage />} />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <StudentDashBoard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/courses/:courseId"
+          element={
+            <ProtectedRoute>
+              <CourseDetail />
+            </ProtectedRoute>
+          }
+        />
+
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -58,7 +58,7 @@ function StudentDashBoard() {
       <header className="main-header">
         <div className="brand-container">
           <img
-            src="https://upload.wikimedia.org/wikipedia/vi/a/ad/Logo_H%E1%BB%8Dc_vi%E1%BB%87n_Ng%C3%A2n_h%C3%A0ng.png"
+            src="/picture/logotron.jpg"
             alt="Logo"
             className="logo"
           />
@@ -86,7 +86,7 @@ function StudentDashBoard() {
         {/* Banner */}
         <div className="banner-section">
           <img
-            src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2940&auto=format&fit=crop"
+            src="./picture/banner.jpg"
             alt="Students"
             className="banner-img"
           />

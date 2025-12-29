@@ -57,6 +57,12 @@ public class Coursecontroller {
         return ResponseEntity.ok(courseResponse);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<CourseResponse> getCourseById(@PathVariable Integer id){
+        CourseResponse courseResponse = courseService.getCourseById(id);
+        return ResponseEntity.ok(courseResponse);
+    }
+
     
 
 }

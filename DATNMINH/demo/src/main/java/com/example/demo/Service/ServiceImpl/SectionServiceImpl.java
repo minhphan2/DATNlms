@@ -55,4 +55,14 @@ public class SectionServiceImpl implements SectionService {
         return sectionMapper.toResponse(updatedSection);
     }
 
+
+    @Override
+    public List<SectionResponse> findbyCourseId (Integer id){
+        List<Section> sections = sectionRepository.findByCourseId(id);
+        List<SectionResponse> sectionResponses = sections.stream()
+                .map(sectionMapper::toResponse)
+                .collect(Collectors.toList());
+        return sectionResponses;
+    }
+
 }

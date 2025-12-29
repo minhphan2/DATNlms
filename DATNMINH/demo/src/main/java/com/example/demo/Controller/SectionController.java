@@ -30,10 +30,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class SectionController {
     private final SectionService sectionService;
 
-    @GetMapping("/bycourse/{id}")
-    public ResponseEntity<List<SectionResponse>> countByCourseIdList(@PathVariable Integer id){
-        return ResponseEntity.ok(sectionService.countByCourseIdList(id));
-    }
 
     @PostMapping
     public ResponseEntity<SectionResponse> createSection(@RequestBody CreateRequest request){
@@ -46,5 +42,10 @@ public class SectionController {
     public ResponseEntity<SectionResponse> updateSection(@PathVariable Integer id, @RequestBody UpdateRequest request){
         SectionResponse sectionResponse = sectionService.updateSection(id,request);
         return ResponseEntity.ok(sectionResponse);
+    }
+
+    @GetMapping("/bycourse/{id}")
+    public ResponseEntity<List<SectionResponse>> findbyCourseId(@PathVariable Integer id){
+        return ResponseEntity.ok(sectionService.findbyCourseId(id));
     }
 }

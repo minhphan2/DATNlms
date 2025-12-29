@@ -14,6 +14,7 @@ public class CourseMapper {
     
     public CourseResponse toResponse(Course course) {
         return CourseResponse.builder()
+                .id(course.getId())
                 .courseName(course.getCourseName())
                 .title(course.getTitle())
                 .teacherName(course.getTeacher().getFullname())
