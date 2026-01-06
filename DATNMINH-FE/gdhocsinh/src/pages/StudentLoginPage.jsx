@@ -21,7 +21,7 @@ function StudentLoginPage() {
       <header className="header">
         <div className="header-left">
           <img
-            src="https://yt3.ggpht.com/a/AATXAJwRrKVaFRcrYMKNsTL14DgE9Gmi0xEBjcOgTA=s900-c-k-c0xffffffff-no-rj-mo"
+            src="./picture/logotron.jpg"
             alt="Logo"
             className="header-logo-img"
             data-media-type="image"
@@ -50,7 +50,7 @@ function StudentLoginPage() {
       <div className="main-container">
         <div className="login-card">
           <img
-            src="https://yt3.ggpht.com/a/AATXAJwRrKVaFRcrYMKNsTL14DgE9Gmi0xEBjcOgTA=s900-c-k-c0xffffffff-no-rj-mo"
+            src="./picture/logokhien.jpg"
             alt="Banking Academy Logo"
             className="card-logo"
             data-media-type="image"

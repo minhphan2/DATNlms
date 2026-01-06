@@ -53,6 +53,12 @@ public EnrollmentResponse createEnrollment(CreateRequest request){
         throw new RuntimeException("Da dang ky khoa hoc nay roi");
     }
 
+    // 5. Kiểm tra số lượng học viên
+    long enrolledCount = enrollmentRepository.countByCourseId(request.getCourseId());
+    if(enrolledCount >= course.getMaxStudents()){
+        throw new RuntimeException("Khoa hoc da day");
+    }
+
     
     // 6. Tạo enrollment
     Enrollment enrollment = enrollmentsMapper.toEntity(request, student, course);

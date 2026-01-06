@@ -1,7 +1,5 @@
 package com.example.demo.Controller;
 
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.*;
@@ -15,17 +13,11 @@ import com.example.demo.DTO.SubmissionRequest.UpdateRequest;
 import com.example.demo.DTO.AssignmentResponse.AssignmentResponse;
 import com.example.demo.DTO.SubmissionRequest.ChamdiemRequest;
 import com.example.demo.DTO.SubmissionResponse.SubmissionResponse;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import jakarta.validation.Valid;
-
-import org.springframework.web.bind.annotation.PathVariable;
 
 
 
@@ -85,6 +77,15 @@ public class SubmissionController {
         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + submissionResponse.getStudentId() + "\"")
         .contentType(MediaType.APPLICATION_OCTET_STREAM)
         .body(fileData);
+    }
+
+    @GetMapping("/by-assignment-and-student")
+    public ResponseEntity<SubmissionResponse> getSubmissionByAssignmentAndStudent(
+        @RequestParam Integer assignmentId,
+        @RequestParam Integer studentId
+    ) {
+        SubmissionResponse submissionResponse = submissionService.findByAssignmentAndStudent(assignmentId, studentId);
+        return ResponseEntity.ok(submissionResponse);
     }
     
     

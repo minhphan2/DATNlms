@@ -24,6 +24,13 @@ const CourseDetail = () => {
   const token = sessionStorage.getItem('token');
   const { courseId } = useParams();
   const navigate = useNavigate();
+  const userStr = sessionStorage.getItem('user');
+  const user = userStr ? JSON.parse(userStr) : null;
+  const studentId = user ? user.id : null;
+
+  console.log("máinhvien", studentId);
+ 
+    
 
   useEffect(() => {
     if (!courseId) return;
@@ -177,7 +184,7 @@ const CourseDetail = () => {
               </div>
               {/* Grades Tab */}
               <div style={{ width: `${100 / tabList.length}%`, flexShrink: 0, padding: 24 }}>
-                <StudentAssignmentComponent courseId={courseId} token={token}/>
+                <StudentAssignmentComponent courseId={courseId} studentId={studentId}  />
               </div>
               {/* Competencies Tab */}
               <div style={{ width: `${100 / tabList.length}%`, flexShrink: 0, padding: 24 }}>

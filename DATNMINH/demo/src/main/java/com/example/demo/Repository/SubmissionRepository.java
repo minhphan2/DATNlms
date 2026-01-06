@@ -13,6 +13,8 @@ public interface SubmissionRepository extends JpaRepository<Submission, Integer>
     Optional<Submission> findById(Integer id);
     List<Submission> findByAssignment_AssignmentId(Integer assignmentId);
     List<Submission> findByStudentId(Integer studentId);
-
+    boolean existsBySubmissionid(Integer submissionid);
+    boolean existsByAssignment_AssignmentIdAndStudent_Id(Integer assignmentId, Integer studentId);
     
+    Optional<Submission> findByAssignment_AssignmentIdAndStudent_Id(Integer assignmentId, Integer studentId);
 }

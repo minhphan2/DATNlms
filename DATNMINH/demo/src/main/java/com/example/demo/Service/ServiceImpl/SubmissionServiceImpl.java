@@ -36,6 +36,12 @@ public class SubmissionServiceImpl implements SubmissionService {
     @Override
     public SubmissionResponse createSubmission(CreateRequest request)
     {
+
+        if(submissionRepository.existsByAssignment_AssignmentIdAndStudent_Id(
+            request.getAssignmentId(), request.getStudentId())){
+            throw new RuntimeException("Bạn đã nộp rồi");
+        }
+
         Assignment assignment = assignmentRepository.findById(request.getAssignmentId())
         .orElseThrow(() -> new RuntimeException("khong tim thay assignment"));
 
@@ -135,6 +141,13 @@ public class SubmissionServiceImpl implements SubmissionService {
 
         Submission updatedSubmission = submissionRepository.save(submission);
         return submissionMapper.toResponse(updatedSubmission);
+    }
+
+    @Override
+    public SubmissionResponse findByAssignmentAndStudent(Integer assignmentId, Integer studentId){
+        Submission submission = submissionRepository.findByAssignment_AssignmentIdAndStudent_Id(assignmentId, studentId)
+        .orElseThrow(() -> new RuntimeException("khong tim thay submission"));
+        return submissionMapper.toResponse(submission);
     }
 
     

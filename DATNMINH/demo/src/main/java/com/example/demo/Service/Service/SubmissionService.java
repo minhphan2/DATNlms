@@ -28,4 +28,5 @@ public interface SubmissionService {
 
     SubmissionResponse gradeSubmission(Integer id, Double score, String feedback);
     
+    SubmissionResponse findByAssignmentAndStudent(Integer assignmentId, Integer studentId);
 }

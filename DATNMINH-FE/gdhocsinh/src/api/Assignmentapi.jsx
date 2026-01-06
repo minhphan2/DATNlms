@@ -66,3 +66,41 @@ export async function createAssignmentWithFiles(data, files, token) {
   }
   return assignment;
 }
+
+
+export async function getAssignmentsByCourse(token, courseId) {
+  const res = await fetch(`http://localhost:8080/api/assignments?courseId=${courseId}`, {
+    headers: { "Authorization": `Bearer ${token}` }
+  });
+  if (!res.ok) throw new Error("Failed to fetch assignments");
+  return res.json();
+}
+
+
+export async function getSubmissionByAssignmentAndStudent(token, assignmentId, studentId) {
+  const res = await fetch(
+    `http://localhost:8080/api/submissions/by-assignment-and-student?assignmentId=${assignmentId}&studentId=${studentId}`,
+    {
+      headers: { "Authorization": `Bearer ${token}` }
+    }
+  );
+  if (!res.ok) throw new Error("Failed to fetch submission");
+  return res.json();
+}
+
+export async function submitAssignment(token, assignmentId, studentId, file) {
+  const formData = new FormData();
+  formData.append("assignmentId", assignmentId);
+  formData.append("studentId", studentId);
+  formData.append("file", file);
+
+  const res = await fetch("http://localhost:8080/api/submissions", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${token}`
+    },
+    body: formData
+  });
+  if (!res.ok) throw new Error("Nộp bài thất bại!");
+  return await res.json();
+}
