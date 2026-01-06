@@ -11,7 +11,7 @@ function StudentLoginComponent() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (localStorage.getItem('token')) {
+        if (sessionStorage.getItem('token')) {
             navigate('/dashboard');
         }
     }, []);
@@ -21,9 +21,16 @@ function StudentLoginComponent() {
         setError('');
         try {
             const data = await login(email, password);
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('user', JSON.stringify(data.user)); // Lưu cả user
-            navigate('/dashboard');
+            sessionStorage.setItem('token', data.token);
+            sessionStorage.setItem('user', JSON.stringify(data.user)); 
+            // Lưu cả user
+
+            const role = data.user.role?.toUpperCase();
+            if (role === 'TEACHER') {
+                navigate('/teacher/dashboard');
+                return;
+            }
+            else navigate('/student/dashboard');
         } catch (error) {
             setError('Sai tài khoản hoặc mật khẩu');
         }

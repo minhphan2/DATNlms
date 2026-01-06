@@ -6,5 +6,6 @@ public interface FileStorageService {
     String storeFile(MultipartFile file, String folder);
     byte[] loadFile(String filePath);
     void deleteFile(String filePath);
+    String storeFile2(MultipartFile file, String folder);
     
 }

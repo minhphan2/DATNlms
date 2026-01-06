@@ -52,6 +52,22 @@ public class FileStorageServiceImpl implements FileStorageService {
     }
 
     @Override
+    public String storeFile2(MultipartFile file, String folder) {
+    String originalFileName = file.getOriginalFilename();
+    String uuid = UUID.randomUUID().toString();
+    String fileName = uuid + "-" + originalFileName;
+    Path dirPath = Paths.get("uploads", folder); // Thư mục uploads/folder
+    try {
+        Files.createDirectories(dirPath); // Tạo thư mục nếu chưa có
+        Path filePath = dirPath.resolve(fileName);
+        file.transferTo(filePath.toFile()); // Lưu file
+        return "/" + folder + "/" + fileName; // Đường dẫn lưu trong DB
+    } catch (IOException e) {
+        throw new RuntimeException("Lỗi lưu file", e);
+    }
+}
+
+    @Override
     public byte[] loadFile(String filePath) {
         try {
             Path file = rootLocation.resolve(filePath.substring(1)); // Bỏ dấu / đầu

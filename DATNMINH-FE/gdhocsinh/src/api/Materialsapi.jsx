@@ -22,3 +22,15 @@ export async function downloadMaterial(token, materialId){
     if (!response.ok) throw new Error('Failed to download material');
     return response.blob();
 }
+
+export async function uploadMaterial(token,formData){
+    const response = await fetch(`http://localhost:8080/api/materials/upload`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
+        body: formData
+    });
+    if (!response.ok) throw new Error('Failed to upload material');
+    return response.json();
+}

@@ -17,6 +17,8 @@ import com.example.demo.Repository.SectionRepository;
 import com.example.demo.Repository.LessonRepository;
 
 import lombok.RequiredArgsConstructor;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -90,5 +92,33 @@ public class ScheduleServiceImpl implements ScheduleService {
         return scheduleRepository.findByCourseId(courseId).stream()
         .map(scheduleMapper::toResponse)
         .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ScheduleResponse> findScheduleByStudentId(Integer studentId){
+        List<Schedules> schedules = scheduleRepository.findScheduleByStudentId(studentId);
+        List<ScheduleResponse> result = new ArrayList<>();
+        for(Schedules s : schedules){
+            Lesson lesson = s.getLesson();
+            Section section = s.getSection();
+            Course course = s.getCourse();
+           result.add(ScheduleResponse.builder()
+                .scheduleId(s.getId())
+                .courseId(course.getId())
+                .courseName(course.getCourseName())
+                .sectionId(section.getId())
+                .sectionTitle(section.getTitle())
+                .lessonId(lesson.getId())
+                .lessonTitle(lesson.getTitle())
+                .dayOfWeek(s.getDayOfWeek())
+                .startTime(s.getStartTime())
+                .endTime(s.getEndTime())
+                .location(s.getLocation())
+                .startDate(s.getStartDate())
+                .endDate(s.getEndDate())
+                .type(s.getType())
+                .build());
+        }
+        return result;
     }
 }

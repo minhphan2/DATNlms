@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
-import "../assets/CSS/CourseDetail.css";
-import { getLessonBySectionId } from "../api/Lessonapi";
-import { getSection } from "../api/Sectionapi";
+import "../../assets/CSS/CourseDetail.css";
+import { getLessonBySectionId } from "../../api/Lessonapi.jsx";
+import { getSection } from "../../api/Sectionapi.jsx";
 import { useParams, useNavigate } from "react-router-dom";
-import LessonCard from "../components/LessonCard.jsx";
-import Headder from "../components/Headder.jsx";
-import SidebarComponent from "../components/SidebarComponent.jsx";
+import LessonCard from "../../components/LessonCard.jsx";
+import Headder from "../../components/Headder.jsx";
+import SidebarComponent from "../../components/SidebarComponent.jsx";
 import { Icon } from "@iconify/react";
-import MaterialList from "../components/MaterialList.jsx";
+import MaterialList from "../../components/MaterialList.jsx";
 
 const SectionDetail = () => {
   const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(true);
   const [lessons, setLessons] = useState([]);
   const [openMaterialLessonId, setOpenMaterialLessonId] = useState(null);
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
   const { sectionId } = useParams();
   const navigate = useNavigate();
 

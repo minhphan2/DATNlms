@@ -52,7 +52,7 @@ public class AssignmentController {
         return ResponseEntity.ok(assignmentService.createAssignment(request));
     }
 
-    @PostMapping("/{id}/upload")
+    @PostMapping("/upload/{id}")
     public ResponseEntity<AssignmentResponse> uploadAttachment(
         @PathVariable Integer id,
         @RequestParam("file") MultipartFile file
@@ -61,17 +61,22 @@ public class AssignmentController {
     }
 
 
-    @GetMapping("/dowload/{id}")
-    public ResponseEntity<byte[]> downloadAttachment(@PathVariable Integer id )
-    {
-        AssignmentResponse assignmentResponse = assignmentService.findById(id);
-        byte[] filecontent = assignmentService.downloadAttachment(id);
+   @GetMapping("/dowload/{id}")
+public ResponseEntity<byte[]> downloadAttachment(@PathVariable Integer id )
+{
+    AssignmentResponse assignmentResponse = assignmentService.findById(id);
+    byte[] filecontent = assignmentService.downloadAttachment(id);
 
-        return ResponseEntity.ok()
-        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + assignmentResponse.getTitle())
-        .contentType(MediaType.APPLICATION_OCTET_STREAM)
-        .body(filecontent);
-    }
+   String url = assignmentResponse.getAttachmentUrl();
+String filename = "attachment";
+if (url != null && url.contains("/")) {
+    filename = url.substring(url.lastIndexOf("/") + 1); // lấy phần sau dấu "/"
+}
+return ResponseEntity.ok()
+    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
+    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+    .body(filecontent);
+}
 
 
     

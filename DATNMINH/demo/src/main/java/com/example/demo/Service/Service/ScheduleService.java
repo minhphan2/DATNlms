@@ -18,5 +18,7 @@ public interface ScheduleService {
     List<ScheduleResponse> findAll();//
 
     List<ScheduleResponse> findByCourseId(Integer courseId);//
+
+    List<ScheduleResponse> findScheduleByStudentId(Integer studentId);
     
 }

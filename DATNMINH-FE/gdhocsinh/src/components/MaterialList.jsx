@@ -3,20 +3,22 @@ import { Icon } from "@iconify/react";
 import { getMaterialsByLessonId, downloadMaterial } from "../api/Materialsapi.jsx";
 
 
-function MaterialList({ lessonId }) {
+function MaterialList({ lessonId, reload }) {
   const [materials, setMaterials] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    getMaterialsByLessonId(token, lessonId)
-      .then(setMaterials)
-      .finally(() => setLoading(false));
-  }, [lessonId]);
+  if (!lessonId) return;
+  const token = sessionStorage.getItem("token");
+  setLoading(true);
+  getMaterialsByLessonId(token, lessonId)
+    .then(data => setMaterials(data))
+    .finally(() => setLoading(false));
+}, [lessonId, reload]);
 
   // Hàm xử lý tải file
   const handleDownload = async (materialId, fileName) => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     try {
       const blob = await downloadMaterial(token, materialId);
       const url = window.URL.createObjectURL(blob);

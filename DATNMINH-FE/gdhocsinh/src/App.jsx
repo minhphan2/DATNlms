@@ -1,11 +1,14 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import StudentLoginPage from "./pages/StudentLoginPage";
-import StudentDashBoard from "./pages/StudentDashBoard";
-import CourseDetail from "./pages/CourseDetail";
+import StudentDashBoard from "./pages/student/StudentDashBoard";
+import CourseDetail from "./pages/student/CourseDetail";
 import ProtectedRoute from "./ProtectedRoute";
-import SectionDetail from "./pages/SectionDetail";
-import MyCourse from "./pages/MyCourse";
-import SchedulePage from "./pages/SchedulePage";
+import SectionDetail from "./pages/student/SectionDetail";
+import MyCourse from "./pages/student/MyCourse";
+import SchedulePage from "./pages/student/SchedulePage";
+import TeacherDashBoard from "./pages/teacher/TeacherDashBoard";
+import TeacherCourseDetail from "./pages/teacher/TeacherCourseDetail";
+import TeacherMyCourse from "./pages/teacher/TeacherMyCourse"
 
 function App() {
   return (
@@ -17,10 +20,28 @@ function App() {
         <Route path="/login" element={<StudentLoginPage />} />
 
         <Route
-          path="/dashboard"
+          path="/student/dashboard"
           element={
             <ProtectedRoute>
               <StudentDashBoard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/teacher/dashboard"
+          element={
+            <ProtectedRoute>
+              <TeacherDashBoard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/teacher/course/:courseId"
+          element={
+            <ProtectedRoute>
+              <TeacherCourseDetail />
             </ProtectedRoute>
           }
         />
@@ -43,8 +64,20 @@ function App() {
           }
         />
 
+
+
         <Route
-          path="my-courses"
+          path="/teacher/my-courses"
+          element={
+            <ProtectedRoute>
+              <TeacherMyCourse/>
+            </ProtectedRoute>
+          }
+        />
+        
+
+        <Route
+          path="/student/my-courses"
           element={
             <ProtectedRoute>
               <MyCourse />

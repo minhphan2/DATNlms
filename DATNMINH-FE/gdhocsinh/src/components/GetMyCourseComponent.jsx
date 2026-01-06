@@ -1,31 +1,27 @@
 import React from "react";
-import { useEffect, useState } from "react";
-import { getMyCourses } from "../api/Courseapi.jsx";
-import '../assets/CSS/StudentDashBoard.css';    
+import '../assets/CSS/StudentDashBoard.css';
+import { useNavigate } from "react-router-dom";
 
-function GetMyCourseComponent() {
-    const [courses, setCourses] = useState([]);
-    const [error, setError] = useState('');
-    useEffect(() => {
-        getMyCourses()
-            .then(data => setCourses(data))
-            .catch(error => setError('Failed to load my courses'));
-    }
-    , []);
-    if (error) {
-        return <div style={{ color: 'red' }}>{error}</div>;
-    }
-    return (
-        <div className="courses-grid">
-            {courses.map(course => (
-                <div key={course.id} className="course-card">
-                    <span className="course-code">{course.id}</span>
-                    <h3 className="course-title">{course.title}</h3>
-                    <p className="course-meta">{course.description}</p>
-                </div>
-            ))}
+function GetMyCourseComponent({ courses, loading }) {
+    const navigate = useNavigate();
+  if (loading) return <div>Đang tải danh sách khóa học của bạn...</div>;
+  if (!courses || courses.length === 0) {
+    return <div>Bạn chưa tham gia khóa học nào.</div>;
+  }
+  return (
+    <div className="courses-grid">
+      {courses.map(course => (
+        <div key={course.id} className="course-card"
+        style={{cursor: "pointer"}}
+        onClick={() => navigate(`/courses/${course.id}`)}
+        >
+          <span className="course-code">{course.id}</span>
+          <h3 className="course-title">{course.title}</h3>
+          <p className="course-meta">{course.description}</p>
         </div>
-    );
+      ))}
+    </div>
+  );
 }
 
 export default GetMyCourseComponent;

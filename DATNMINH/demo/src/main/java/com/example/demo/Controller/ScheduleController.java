@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -60,6 +62,13 @@ public class ScheduleController {
         scheduleService.deleteSchedule(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/byuser/{studentId}")
+    public ResponseEntity<List<ScheduleResponse>> getSchedulesByStudentId(@PathVariable Integer studentId){
+        List<ScheduleResponse> schedules = scheduleService.findScheduleByStudentId(studentId);
+        return ResponseEntity.ok(schedules);
+    }
+    
     
     
 }

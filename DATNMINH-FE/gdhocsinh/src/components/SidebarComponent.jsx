@@ -10,22 +10,33 @@ const SidebarComponent = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     getProfile(token)
       .then(data => setUser(data))
       .catch(() => setUser(null));
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user');
     navigate('/login');
   };
 
-  const menus = [
-    { label: "Dashboard", icon: "lucide:layout-dashboard", path: "/dashboard" },
+  // Menu cho từng role
+  const menusStudent = [
+    { label: "Dashboard", icon: "lucide:layout-dashboard", path: "/student/dashboard" },
     { label: "My Courses", icon: "lucide:book-open", path: "/my-courses" },
     { label: "Schedule", icon: "lucide:calendar", path: "/schedule" },
+  ];
+  const menusTeacher = [
+    { label: "Dashboard", icon: "lucide:layout-dashboard", path: "/teacher/dashboard" },
+    { label: "Khóa học phụ trách", icon: "lucide:book-open", path: "/teacher/my-courses" },
+    { label: "Quản lý bài tập", icon: "lucide:clipboard-list", path: "/teacher/assignments" },
+  ];
+  const menusAdmin = [
+    { label: "Dashboard", icon: "lucide:layout-dashboard", path: "/admin" },
+    { label: "Quản lý người dùng", icon: "lucide:users", path: "/admin/users" },
+    { label: "Quản lý khóa học", icon: "lucide:book", path: "/admin/courses" },
   ];
   const systemMenus = [
     { label: "Documents", icon: "lucide:file-text", path: "/documents" },
@@ -33,6 +44,12 @@ const SidebarComponent = () => {
   ];
 
   if (!user) return null;
+
+  // Xác định role
+  const role = user?.role?.toLowerCase();
+  let menus = menusStudent;
+  if (role === "teacher") menus = menusTeacher;
+  if (role === "admin") menus = menusAdmin;
 
   return (
     <aside
@@ -81,7 +98,7 @@ const SidebarComponent = () => {
         gap: 12,
         justifyContent: collapsed ? "center" : "flex-start"
       }}>
-        <img src="/picture/logotron.jpg" alt="Logo" style={{ width: 36, height: 36, borderRadius: 8 }} />
+        <img src="/picture/logotron.jpg" alt="Logo" style={{ width: "40px", height: "40px", borderRadius: 8 }} />
         {!collapsed && "HỌC VIỆN NGÂN HÀNG"}
       </div>
       {/* User Info */}
@@ -102,8 +119,8 @@ const SidebarComponent = () => {
         />
         {!collapsed && (
           <div>
-            <div style={{ fontWeight: 600, fontSize: 16 }}>{user?.fullname || "Tên sinh viên"}</div>
-            <div style={{ fontSize: 13, color: "#888" }}>{user?.id || "Mã SV"}</div>
+            <div style={{ fontWeight: 600, fontSize: 16 }}>{user?.fullname || "Tên người dùng"}</div>
+            <div style={{ fontSize: 13, color: "#888" }}>{user?.id || "Mã người dùng"}</div>
             <div style={{ fontSize: 13, color: "#007bff", fontWeight: 500 }}>{user?.role || "Role"}</div>
           </div>
         )}

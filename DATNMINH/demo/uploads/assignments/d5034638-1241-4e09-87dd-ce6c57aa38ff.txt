@@ -1,0 +1,72 @@
+
+import '../assets/CSS/StudentDashBoard.css';
+import {Icon} from "@iconify/react";
+import GetCourseComponent from "../components/GetCourseComponent.jsx";
+import GetMyCourseComponent from "../components/GetMyCourseComponent.jsx";
+import Headder from "../components/Headder.jsx";
+function StudentDashBoard() {
+  return (
+    <div id="dashboard-page">
+      <Headder/>
+      <main className="container">
+        {/* Banner */}
+        <div className="banner-section">
+          <img
+            src="./picture/banner.jpg"
+            alt="Students"
+            className="banner-img"
+          />
+          <div className="banner-content">
+            <h1 className="banner-title">Chương Trình Chất Lượng Cao</h1>
+            <p style={{ marginBottom: 24, fontSize: 16, opacity: 0.9 }}>
+              Nâng cao kiến thức và kỹ năng với các khóa học hàng đầu.
+            </p>
+            <button className="banner-btn" data-media-type="banani-button">
+              Thông tin đào tạo
+              <Icon icon="lucide:arrow-right" style={{ fontSize: 16 }}></Icon>
+            </button>
+          </div>
+        </div>
+
+        {/* Course Categories */}
+        <div className="section-header">
+          <div className="section-title">
+            <Icon icon="lucide:layers" style={{ color: 'var(--primary)', fontSize: 24 }}></Icon>
+            Danh mục khóa học
+          </div>
+          <div className="view-all" data-media-type="banani-button">Xem tất cả</div>
+        </div>
+
+        
+          {/* Các category-card */}
+          {/* ...giữ nguyên các category-card, đổi class thành className... */}
+          {<GetCourseComponent/>}
+        
+
+        {/* My Courses */}
+        <div className="section-header">
+          <div className="section-title">
+            <Icon icon="lucide:graduation-cap" style={{ color: 'var(--accent-red)', fontSize: 24 }}></Icon>
+            Khóa học của tôi
+          </div>
+          <div className="view-all" data-media-type="banani-button">Xem tất cả</div>
+        </div>
+
+          {/* Các course-card */}
+          {/* ...giữ nguyên các course-card, đổi class thành className... */}
+          {<GetMyCourseComponent/>}
+      </main>
+
+      <footer className="footer">
+        © 2025 Học Viện Ngân Hàng. All rights reserved.<br />
+        Hệ thống hỗ trợ học tập trực tuyến.
+      </footer>
+
+      <div className="help-btn" data-media-type="banani-button">
+        <Icon icon="lucide:message-circle-question" style={{ fontSize: 28 }}></Icon>
+      </div>
+    </div>
+  );
+}
+
+export default StudentDashBoard;

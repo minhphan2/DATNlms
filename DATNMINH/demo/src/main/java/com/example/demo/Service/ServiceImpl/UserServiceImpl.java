@@ -114,4 +114,12 @@ public class UserServiceImpl implements UserService {
     }
     
 
+    @Override
+    public List<UserResponse> getStudentsByCourseId(Integer courseId){
+        List<User> students = userRepository.findStudentsByCourseId(courseId , User.Role.student);
+        return students.stream()
+        .map(userMapper::toResponse)
+        .collect(Collectors.toList());
+    }
+
 }

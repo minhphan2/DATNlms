@@ -17,7 +17,9 @@ public class ScheduleResponse {
     private Integer courseId;
     private String courseName;
     private Integer sectionId;
+    private String sectionTitle;
     private Integer lessonId;
+    private String lessonTitle;
     private Schedules.DOWeek dayOfWeek;
     private String startTime;
     private String endTime;

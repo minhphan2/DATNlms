@@ -2,6 +2,7 @@ package com.example.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -25,6 +26,18 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/users/login").permitAll()
+                //STUDENT dangky khoa hoc
+                .requestMatchers(HttpMethod.POST, "/api/enrollments").hasRole("STUDENT")
+                //TEAHCER tao assignment
+                .requestMatchers(HttpMethod.POST, "/api/assignments").hasRole("TEACHER")
+                //STUDENT nopbaitap
+                .requestMatchers(HttpMethod.POST, "/api/submissions").hasRole("STUDENT")
+                //TEACHER tao quiz
+                .requestMatchers(HttpMethod.POST, "/api/quizzes").hasRole("TEACHER")
+                //STUDENT lam quiz
+                .requestMatchers(HttpMethod.POST, "/api/quizzes/submit").hasRole("STUDENT")
+                //lay thong tin ca nhan
+                .requestMatchers(HttpMethod.GET, "/api/users/me").authenticated()
                 .anyRequest().authenticated()
             );
         

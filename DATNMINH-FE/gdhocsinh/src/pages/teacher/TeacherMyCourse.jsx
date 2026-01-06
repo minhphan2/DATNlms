@@ -1,23 +1,29 @@
 import React, { useEffect, useState } from "react";
-import SidebarComponent from "../components/SidebarComponent";
-import Headder from "../components/Headder";
+import SidebarComponent from "../../components/SidebarComponent.jsx";
 import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
-
-// Giả sử bạn có hàm này để lấy danh sách khóa học
-import { getMyCourses } from "../api/Courseapi.jsx";
+import { getCourses } from "../../api/Courseapi";
 
 function MyCourse() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+
+  // Lấy thông tin user từ sessionStorage
+  const userStr = sessionStorage.getItem("user");
+  const user = userStr ? JSON.parse(userStr) : null;
+  const teacherName = user?.fullname;
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    getMyCourses(token)
-      .then(data => setCourses(data))
+    const token = sessionStorage.getItem("token");
+    getCourses(token)
+      .then(data => {
+        // Lọc các course mà teacherName trùng với tên giáo viên đăng nhập
+        const myCourses = data.filter(course => course.teacherName === teacherName);
+        setCourses(myCourses);
+      })
       .finally(() => setLoading(false));
-  }, []);
+  }, [teacherName]);
 
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: "#f6faff" }}>
@@ -26,12 +32,12 @@ function MyCourse() {
         <div style={{ padding: "32px" }}>
           <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 24 }}>
             <Icon icon="lucide:book-open" style={{ fontSize: 32, color: "#007bff", marginRight: 12 }} />
-            Khóa học của tôi
+            Khóa học tôi phụ trách
           </h1>
           {loading ? (
             <div>Đang tải...</div>
           ) : courses.length === 0 ? (
-            <div>Bạn chưa đăng ký khóa học nào.</div>
+            <div>Bạn chưa phụ trách khóa học nào.</div>
           ) : (
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 24 }}>
               {courses.map(course => (
@@ -45,7 +51,7 @@ function MyCourse() {
                   gap: 12
                 }}>
                   <div style={{ fontWeight: 700, fontSize: 20, color: "#007bff" }}>{course.title}</div>
-                  <div style={{ color: "#888", fontSize: 15 }}>{course.code}</div>
+                  <div style={{ color: "#888", fontSize: 15 }}>{course.courseName}</div>
                   <div style={{ fontSize: 16 }}>{course.description}</div>
                   <div style={{ marginTop: 8 }}> Tên giáo viên: 
                     <span style={{
@@ -70,9 +76,9 @@ function MyCourse() {
                       fontWeight: 600,
                       cursor: "pointer"
                     }}
-                    onClick={() => navigate(`/courses/${course.id}`)}
+                    onClick={() => navigate(`/teacher/course/${course.id}`)}
                   >
-                    Vào học
+                    Quản lý khóa học
                   </button>
                 </div>
               ))}

@@ -66,6 +66,9 @@ public class UserController {
         return ResponseEntity.ok(UserService.getMyCourses(user));
     }
 
-
+    @GetMapping("/bycourse/{courseId}")
+    public ResponseEntity<List<UserResponse>> getStudentsByCourseId(@PathVariable Integer courseId){
+        return ResponseEntity.ok(UserService.getStudentsByCourseId(courseId));
+    }
 
 }

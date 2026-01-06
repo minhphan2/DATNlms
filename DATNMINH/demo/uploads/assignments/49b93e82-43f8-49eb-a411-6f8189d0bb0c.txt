@@ -1,0 +1,57 @@
+CREATE TABLE Dim_Customer (
+    Customer_ID NVARCHAR(50) PRIMARY KEY,
+    Customer_Name NVARCHAR(50),
+    Segment NVARCHAR(50)
+);
+
+CREATE TABLE Dim_Product (
+    Product_ID NVARCHAR(50) PRIMARY KEY,
+    Product_Name NVARCHAR(200),
+    Category NVARCHAR(50),
+    Sub_Category NVARCHAR(50)
+);
+
+CREATE TABLE Dim_ShipMode (
+    ShipMode_ID INT PRIMARY KEY IDENTITY(1,1),
+    Ship_Mode NVARCHAR(50)
+);
+
+
+CREATE TABLE Dim_Location (
+    Location_ID INT PRIMARY KEY IDENTITY(1,1),
+    State NVARCHAR(50),
+    Country NVARCHAR(50),
+    Market NVARCHAR(50)
+);
+
+CREATE TABLE Dim_Date (
+    Order_Date DATE PRIMARY KEY,
+    Day INT,
+    Month INT,
+    Year INT,
+    Quarter INT
+);
+
+CREATE TABLE Fact_Sales (
+    Customer_ID NVARCHAR(50),
+    Product_ID INT,
+    Location_ID INT,
+    Order_Date DATE,
+    ShipMode_ID INT,
+    Discount FLOAT,
+    Profit FLOAT,
+    Quantity INT,
+    Sales FLOAT,
+    Shipping_days INT,
+    Shipping_Cost FLOAT,
+
+    FOREIGN KEY (Customer_ID) REFERENCES Dim_Customer(Customer_ID),
+    FOREIGN KEY (Product_ID) REFERENCES Dim_Product(Product_ID),
+    FOREIGN KEY (Location_ID) REFERENCES Dim_Location(Location_ID),
+    FOREIGN KEY (Order_Date) REFERENCES Dim_Date(Order_Date),
+    FOREIGN KEY (ShipMode_ID) REFERENCES Dim_ShipMode(ShipMode_ID)
+);
+
+
+
+
