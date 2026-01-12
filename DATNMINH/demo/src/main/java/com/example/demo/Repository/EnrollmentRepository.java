@@ -23,6 +23,7 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Integer>
     
     List<Enrollment> findByStudentId(Integer studentId);
 
-    long countByCourseId(Integer courseId);
+   @Query("SELECT COUNT(e) FROM Enrollment e WHERE e.course.id = :courseId")
+    Long countByCourseId(@org.springframework.data.repository.query.Param("courseId") Integer courseId);
 
 } 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { createAssignmentWithFiles, getAssignmentAttachments, downloadAssignmentAttachment } from "../api/Assignmentapi";
+import { createAssignmentWithFiles, getAssignmentAttachments, downloadAssignmentAttachment, getSubmissionCount, getStudentCount } from "../api/Assignmentapi";
 import { Icon } from "@iconify/react";
+import { useNavigate } from "react-router-dom";
 
 function AssignmentCreateForm({ courseId, onCreated, assignments }) {
   const [title, setTitle] = useState("");
@@ -9,24 +10,44 @@ function AssignmentCreateForm({ courseId, onCreated, assignments }) {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [assignmentsWithFiles, setAssignmentsWithFiles] = useState([]);
+  const [submissionCounts, setSubmissionCounts] = useState({});
+  const [studentCount, setStudentCount] = useState(0);
+  const navigate = useNavigate();
 
   // Khi assignments thay đổi, fetch attachments cho từng assignment
   useEffect(() => {
-    const fetchAttachments = async () => {
+    const fetchAll = async () => {
       const token = sessionStorage.getItem("token");
+      // Fetch attachments
       const updated = await Promise.all(
         (assignments || []).map(async (a) => {
-          // Nếu đã có attachments thì giữ nguyên, nếu chưa thì fetch
           if (a.attachments && Array.isArray(a.attachments)) return a;
           const attachments = await getAssignmentAttachments(token, a.assignmentId);
           return { ...a, attachments };
         })
       );
       setAssignmentsWithFiles(updated);
+
+      // Fetch tổng số học sinh
+      const total = await getStudentCount(token, courseId);
+      console.log("Total students:", total);
+      setStudentCount(total);
+
+      // Fetch số bài đã nộp cho từng assignment
+      const counts = {};
+      for (let a of assignments || []) {
+        counts[a.assignmentId] = await getSubmissionCount(token, a.assignmentId);
+        console.log(`Assignment ${a.assignmentId} submission count:`, counts[a.assignmentId]);
+      }
+      setSubmissionCounts(counts);
     };
-    if (assignments && assignments.length > 0) fetchAttachments();
-    else setAssignmentsWithFiles([]);
-  }, [assignments]);
+    if (assignments && assignments.length > 0) fetchAll();
+    else {
+      setAssignmentsWithFiles([]);
+      setSubmissionCounts({});
+      setStudentCount(0);
+    }
+  }, [assignments, courseId]);
 
   // Download file đính kèm
   const handleDownloadAttachment = async (attachmentId, fileName) => {
@@ -53,7 +74,6 @@ function AssignmentCreateForm({ courseId, onCreated, assignments }) {
     const token = sessionStorage.getItem("token");
     const data = { courseId, title, deadline, instructions };
     try {
-      // Tạo assignment và upload file đính kèm nếu có
       const assignment = await createAssignmentWithFiles(data, files, token);
       if (onCreated) onCreated(assignment);
       setTitle("");
@@ -163,6 +183,27 @@ function AssignmentCreateForm({ courseId, onCreated, assignments }) {
             )}
             <div style={{ fontSize: 14, color: "#888" }}>Tạo lúc: {a.createdAt}</div>
             <div style={{ fontSize: 14, color: "#888" }}>Điểm tối đa: {a.maxScore}</div>
+            <div style={{ marginTop:"auto", fontSize: 14, color: "#007bff", fontWeight: 600 }}>
+              Đã nộp: {submissionCounts[a.assignmentId] || 0}/{studentCount}
+
+
+              <button
+              onClick={() => navigate(`/teacher/assignment/${a.assignmentId}`)}
+              style={{
+                marginLeft: "150px",
+                background: "none",
+                color: "#007bff",
+                border: "none",
+                padding: 0,
+                fontSize: 15,
+                fontWeight: 500,
+                cursor: "pointer",
+                textAlign: "left"
+              }}
+            >
+              Xem chi tiết
+            </button>
+            </div>
           </div>
         ))}
       </div>

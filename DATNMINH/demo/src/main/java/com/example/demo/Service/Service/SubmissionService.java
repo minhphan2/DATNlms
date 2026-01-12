@@ -28,5 +28,8 @@ public interface SubmissionService {
 
     SubmissionResponse gradeSubmission(Integer id, Double score, String feedback);
     
+    SubmissionResponse createSubmissionWithFiles(Integer assignmentId, Integer studentId, List<MultipartFile> files);
+
     SubmissionResponse findByAssignmentAndStudent(Integer assignmentId, Integer studentId);
+    Integer countSubmissionsByAssignment(Integer assignmentId);
 }

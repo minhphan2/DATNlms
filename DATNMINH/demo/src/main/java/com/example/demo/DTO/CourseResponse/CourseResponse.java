@@ -1,6 +1,7 @@
 package com.example.demo.DTO.CourseResponse;
 
 import com.example.demo.model.Course;
+import com.example.demo.DTO.DepartmentResponse.DepartmentResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,7 @@ public class CourseResponse {
     private Integer id;
     private String courseName;
     private String title;
+    private DepartmentResponse department;
     private String teacherName;
     private String description;
     private String category;

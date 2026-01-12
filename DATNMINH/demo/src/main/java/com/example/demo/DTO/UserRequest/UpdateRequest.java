@@ -38,4 +38,6 @@ public class UpdateRequest {
 
     @NotNull(message = "Status is required")
     private User.Status status;
+
+    private Integer department;
 }

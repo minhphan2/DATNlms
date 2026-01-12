@@ -1,0 +1,26 @@
+4.2. Đảm bảo chất lượng
+4.2.1. Kiểm định các gói công việc trong một sprint
+Mục tiêu:
+Đảm bảo các gói công việc trong một sprint đáp ứng yêu cầu chất lượng, tiến tới duy trì chất lượng toàn hệ thống.
+Thực hiện:
+Tiến hành kiểm định định kỳ và chi tiết cho từng gói công việc. Đảm bảo chất lượng sản phẩm/dịch vụ trước khi chuyển giao hoặc tích hợp vào công việc tiếp theo.
+4.2.2. Kiểm định chất lượng các gói công việc trong dự án
+Mục tiêu:
+Duy trì chất lượng tổng thể của dự án trong suốt quá trình triển khai.
+Thực hiện:
+Thực hiện kiểm định định kỳ cho các gói công việc đã và đang thực hiện. Bao gồm đánh giá sản phẩm khi hợp nhất nhiều gói công việc. Qua đó, dự án được kiểm soát liên tục theo các chuẩn chất lượng phần mềm đã đề ra.
+4.3. Kiểm soát chất lượng
+Mục tiêu:
+Kiểm soát và cải thiện chất lượng sản phẩm của dự án.
+Kết quả:
+Đưa ra các quyết định về việc chấp nhận, làm lại hoặc điều chỉnh quy trình.
+Phương pháp kiểm thử áp dụng:
+Unit Test (Kiểm thử đơn vị):
+Mục tiêu: Đảm bảo từng thành phần (hàm, phương thức, module) hoạt động đúng.
+Thực hiện: Lập trình viên kiểm thử ngay sau khi phát triển xong một chức năng.
+Staging Test (Kiểm thử trên môi trường staging):
+Mục tiêu: Đảm bảo tính tương thích và ổn định của hệ thống trước khi triển khai thực tế.
+Thực hiện: Tester trong nhóm dự án thực hiện trên môi trường staging.
+UAT (User Acceptance Testing – Kiểm thử chấp nhận người dùng):
+Mục tiêu: Xác nhận hệ thống đáp ứng đúng yêu cầu và mong muốn của người dùng cuối.
+Thực hiện: Thực hiện bởi tester cùng với khách hàng.

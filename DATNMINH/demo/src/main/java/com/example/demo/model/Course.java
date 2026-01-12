@@ -70,4 +70,8 @@ public class Course {
     @Column(name = "enddate", nullable = false)
     private LocalDateTime endDate;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "departmentid", nullable = true)
+    private Department department;
+
 }

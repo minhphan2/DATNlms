@@ -71,4 +71,21 @@ public class CourseServiceImpl implements CourseService {
         .orElseThrow(()-> new RuntimeException("Ko tim thay khoa hoc"));
         return courseMapper.toResponse(course);
     }
+
+    @Override
+    public List<CourseResponse> getCoursesByDepartment(User user){
+        Integer departmentId = user.getDepartment().getId();
+        List<Course> courses = courseRepository.findByDepartmentId(departmentId);
+        return courses.stream()
+        .map(courseMapper::toResponse)
+        .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CourseResponse> getCourseByDepartmentId(Integer id) {
+    List<Course> courses = courseRepository.findByDepartmentId(id);
+    return courses.stream()
+        .map(courseMapper::toResponse)
+        .collect(Collectors.toList());
+}
 }

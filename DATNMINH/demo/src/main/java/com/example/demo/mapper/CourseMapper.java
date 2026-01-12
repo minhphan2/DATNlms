@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import com.example.demo.model.Course;
 import com.example.demo.model.User;
 import com.example.demo.DTO.CourseResponse.CourseResponse;
+import com.example.demo.DTO.DepartmentResponse.DepartmentResponse;
 import com.example.demo.DTO.CourseRequest.CreateRequest;
 import com.example.demo.DTO.CourseRequest.UpdateRequest;
 
@@ -13,6 +14,13 @@ import com.example.demo.DTO.CourseRequest.UpdateRequest;
 public class CourseMapper {
     
     public CourseResponse toResponse(Course course) {
+      DepartmentResponse deptDto = null;
+    if (course.getDepartment() != null) {
+        deptDto = DepartmentResponse.builder()
+            .id(course.getDepartment().getId())
+            .name(course.getDepartment().getName())
+            .build();
+    }
         return CourseResponse.builder()
                 .id(course.getId())
                 .courseName(course.getCourseName())
@@ -23,6 +31,7 @@ public class CourseMapper {
                 .thumbnail(course.getThumbnail())
                 .maxStudents(course.getMaxStudents())
                 .status(course.getStatus())
+                .department(deptDto)
                 .createdAt(course.getCreatedAt())
                 .build();
     }

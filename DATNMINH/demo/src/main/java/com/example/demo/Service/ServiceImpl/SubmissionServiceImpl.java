@@ -145,9 +145,39 @@ public class SubmissionServiceImpl implements SubmissionService {
 
     @Override
     public SubmissionResponse findByAssignmentAndStudent(Integer assignmentId, Integer studentId){
-        Submission submission = submissionRepository.findByAssignment_AssignmentIdAndStudent_Id(assignmentId, studentId)
-        .orElseThrow(() -> new RuntimeException("khong tim thay submission"));
-        return submissionMapper.toResponse(submission);
+         return submissionRepository.findByAssignment_AssignmentIdAndStudent_Id(assignmentId, studentId)
+        .map(submissionMapper::toResponse)
+        .orElse(null);
+    }
+
+    @Override
+    public SubmissionResponse createSubmissionWithFiles(Integer assignmentId, Integer studentId, List<MultipartFile> files) {
+        Assignment assignment = assignmentRepository.findById(assignmentId)
+        .orElseThrow(() -> new RuntimeException("khong tim thay assignment"));
+
+        User user = userRepository.findById(studentId)
+        .orElseThrow(() -> new RuntimeException("khong tim thay hoc sinh"));
+
+        Submission submission = new Submission();
+        submission.setAssignment(assignment);
+        submission.setStudent(user);
+
+        // Lưu các file và lấy URL
+        List<String> fileUrls = files.stream()
+            .map(file -> fileStorageService.storeFile(file, "submissions"))
+            .collect(Collectors.toList());
+
+        // Giả sử bạn lưu trữ các URL dưới dạng chuỗi phân tách bằng dấu phẩy
+        String combinedFileUrls = String.join(",", fileUrls);
+        submission.setFileUrl(combinedFileUrls);
+
+        Submission savedSubmission = submissionRepository.save(submission);
+        return submissionMapper.toResponse(savedSubmission);
+    }
+
+    @Override
+    public Integer countSubmissionsByAssignment(Integer assignmentId){
+        return submissionRepository.countByAssignment_AssignmentId(assignmentId);
     }
 
     

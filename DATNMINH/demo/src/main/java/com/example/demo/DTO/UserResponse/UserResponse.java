@@ -1,6 +1,8 @@
 package com.example.demo.DTO.UserResponse;
 
 import com.example.demo.model.User;
+import com.example.demo.DTO.DepartmentResponse.DepartmentResponse;
+import com.example.demo.model.Department;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,4 +21,5 @@ public class UserResponse {
     private String phone;
     private String avatar;
     private User.Status status;
+    private DepartmentResponse department;
 }

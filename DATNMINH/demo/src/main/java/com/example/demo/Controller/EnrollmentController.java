@@ -7,12 +7,14 @@ import com.example.demo.DTO.CourseResponse.CourseResponse;
 import com.example.demo.Repository.CourseRepository;
 import com.example.demo.Service.ServiceImpl.CourseServiceImpl;
 import com.example.demo.model.Course;
+import com.example.demo.model.Enrollment;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import com.example.demo.DTO.EnrollmentRequest.*;
 import com.example.demo.Service.Service.EnrollmentService;
 import com.example.demo.DTO.EnrollmentResponse.EnrollmentResponse;
+import com.example.demo.Repository.EnrollmentRepository;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -35,6 +37,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequiredArgsConstructor
 public class EnrollmentController {
     private final EnrollmentService enrollmentService;
+    private final EnrollmentRepository enrollmentRepository;
 
     @GetMapping
     public ResponseEntity<List<EnrollmentResponse>> getAllEnrollments(){
@@ -46,6 +49,13 @@ public class EnrollmentController {
         EnrollmentResponse enrollmentResponse = enrollmentService.createEnrollment(request);
         return ResponseEntity.ok(enrollmentResponse);
     }
+
+    @GetMapping("/student-count")
+    public ResponseEntity<Integer> getStudentCountInCourse(@RequestParam Integer courseId){
+        Integer count = enrollmentRepository.countByCourseId(courseId).intValue();
+        return ResponseEntity.ok(count);
+    }
+    
 
     
     

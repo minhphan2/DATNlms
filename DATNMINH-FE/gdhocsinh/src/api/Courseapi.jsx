@@ -79,4 +79,16 @@ export async function getCourseDetail(courseId, token) {
   return res.json();
 }
 
+export async function getCoursesByDepartment(departmentId, token) {
+  const response = await fetch(`http://localhost:8080/api/courses/bydepartment/${departmentId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  if (!response.ok) throw new Error('Failed to fetch courses by department');
+  return response.json();
+}
+
 

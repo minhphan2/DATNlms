@@ -41,4 +41,7 @@ public class CreateRequest {
     @NotNull(message = "Status is required")
     private User.Status status;
 
+
+    private Integer department;
+
 }

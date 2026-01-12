@@ -1,0 +1,15 @@
+user crud - v
+course crud - v
+enrollment crud - v
+section crud- v
+lesson crud up tai lieu - v
+schedule crud - v 
+material done all
+Assignment crud - v
+submission crud upload download - v
+answer
+gradebook
+notification
+question crud - v
+quizzes crud - v
+quiz_result

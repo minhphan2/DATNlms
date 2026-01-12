@@ -73,6 +73,10 @@ public class User {
     @JsonIgnore
     private List<Enrollment> enrollments;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "departmentid", nullable = true)
+    private Department department;
+
     @Override
     public String toString(){
         return "";

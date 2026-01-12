@@ -3,7 +3,10 @@ package com.example.demo.Controller;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.ResponseEntity;
+
+import java.util.HashMap;
 import java.util.List;
 
 import com.example.demo.Service.Service.SubmissionService;
@@ -79,14 +82,32 @@ public class SubmissionController {
         .body(fileData);
     }
 
-    @GetMapping("/by-assignment-and-student")
-    public ResponseEntity<SubmissionResponse> getSubmissionByAssignmentAndStudent(
-        @RequestParam Integer assignmentId,
-        @RequestParam Integer studentId
-    ) {
-        SubmissionResponse submissionResponse = submissionService.findByAssignmentAndStudent(assignmentId, studentId);
-        return ResponseEntity.ok(submissionResponse);
+    @GetMapping("/count-by-assignment")
+    public ResponseEntity<Integer> countSubmissionsByAssignment(@RequestParam Integer assignmentId){
+        Integer count = submissionService.countSubmissionsByAssignment(assignmentId);
+        return ResponseEntity.ok(count);
     }
-    
+
+    @GetMapping("/by-assignment-and-student")
+public ResponseEntity<?> getSubmissionByAssignmentAndStudent(
+    @RequestParam Integer assignmentId,
+    @RequestParam Integer studentId
+) {
+    SubmissionResponse submissionResponse = submissionService.findByAssignmentAndStudent(assignmentId, studentId);
+    if (submissionResponse == null) {
+       return ResponseEntity.ok("{\"message\":\"Chưa nộp bài\"}");
+    }
+    return ResponseEntity.ok(submissionResponse);
+}
+
+    @PostMapping("/submit")
+public ResponseEntity<SubmissionResponse> submitAssignment(
+    @RequestParam Integer assignmentId,
+    @RequestParam Integer studentId,
+    @RequestParam("files") List<MultipartFile> files
+) {
+    SubmissionResponse response = submissionService.createSubmissionWithFiles(assignmentId, studentId, files);
+    return ResponseEntity.ok(response);
+}
     
 }

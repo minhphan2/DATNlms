@@ -5,12 +5,14 @@ import SidebarComponent from "../../components/SidebarComponent.jsx";
 import GetCourseComponent from "../../components/GetCourseComponent.jsx";
 import GetMyCourseComponent from "../../components/GetMyCourseComponent.jsx";
 import { getCourses, getMyCourses } from "../../api/Courseapi.jsx";
+import { getDepartments } from "../../api/Departmentapi.jsx";
+import GetDepartmentComponent from "../../components/GetDepartmentComponent.jsx";
 
 function StudentDashBoard() {
   const [allCourses, setCourses] = useState([]);
   const [myCourses, setMyCourses] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [departments, setDepartments] = useState([]);
   const token = sessionStorage.getItem("token");
   const userStr = sessionStorage.getItem("user");
   const user = userStr ? JSON.parse(userStr) : null;
@@ -20,10 +22,12 @@ function StudentDashBoard() {
     if (!token || !studentId) return;
     setLoading(true);
     Promise.all([
+      getDepartments(token),
       getCourses(token),
       getMyCourses(studentId, token)
     ])
       .then(([all, mine]) => {
+        setDepartments(all);
         setCourses(all);
         setMyCourses(mine);
       })
@@ -62,6 +66,17 @@ function StudentDashBoard() {
               </button>
             </div>
           </div>
+          {/* danh sach khoa*/}
+                 <div className="section-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+            <div className="section-title" style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 600, fontSize: 20 }}>
+              <Icon icon="lucide:layers" style={{ color: 'var(--primary, #007bff)', fontSize: 24 }} />
+              Danh sách khoa
+            </div>
+            <div className="view-all" style={{ color: "#007bff", fontWeight: 500, cursor: "pointer" }}>Xem tất cả</div>
+          </div>
+          {/* Truyền availableCourses vào component */}
+          <GetDepartmentComponent departments={departments} loading={loading} />
+
           {/* Course Categories */}
           <div className="section-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
             <div className="section-title" style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 600, fontSize: 20 }}>

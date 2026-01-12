@@ -26,6 +26,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/users/login").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/enrollments/count").permitAll()
                 //STUDENT dangky khoa hoc
                 .requestMatchers(HttpMethod.POST, "/api/enrollments").hasRole("STUDENT")
                 //TEAHCER tao assignment

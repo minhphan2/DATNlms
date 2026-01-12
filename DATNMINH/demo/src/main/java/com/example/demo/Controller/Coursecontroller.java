@@ -20,13 +20,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import com.example.demo.model.User;
 
@@ -63,6 +56,9 @@ public class Coursecontroller {
         return ResponseEntity.ok(courseResponse);
     }
 
-    
-
+  @GetMapping("/bydepartment/{id}")
+public ResponseEntity<List<CourseResponse>> getCoursesByDepartmentId(@PathVariable Integer id) {
+    List<CourseResponse> courseResponses = courseService.getCourseByDepartmentId(id);
+    return ResponseEntity.ok(courseResponses);
+}
 }

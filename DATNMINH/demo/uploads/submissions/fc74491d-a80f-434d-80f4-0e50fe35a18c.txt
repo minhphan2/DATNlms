@@ -1,0 +1,673 @@
+<div
+  style="
+    width: 1440px;
+    min-height: 812px;
+    position: relative;
+    font-family: var(--font-family-body);
+    background-color: var(--background);
+  "
+>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100;200;300;400;500;600;700;800;900&family=Geist:wght@100;200;300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@100;200;300;400;500;600;700&family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito:wght@200;300;400;500;600;700;800;900&family=PT+Serif:wght@400;700&family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&family=Shantell+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <html>
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Course Detail View</title>
+
+      <style id="base-styles">
+        * {
+          box-sizing: border-box;
+        }
+
+        body {
+          margin: 0;
+          padding: 0;
+          background-color: var(--background);
+          color: var(--foreground);
+          display: flex;
+          flex-direction: column;
+          min-height: 812px;
+        }
+
+        .page-root {
+          display: flex;
+          flex-direction: column;
+          min-height: 812px;
+          background-color: var(--background);
+        }
+
+        .text-muted {
+          color: var(--muted-foreground);
+        }
+      </style>
+
+      <style id="layout-styles">
+        .top-nav {
+          background-color: var(--primary);
+          height: 56px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 32px;
+          color: var(--primary-foreground);
+          font-size: 14px;
+        }
+
+        .nav-left {
+          display: flex;
+          gap: 24px;
+          font-size: 14px;
+          font-weight: 500;
+        }
+
+        .nav-link {
+          color: var(--primary-foreground);
+          text-decoration: none;
+          cursor: pointer;
+          white-space: nowrap;
+        }
+
+        .nav-right {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+        }
+
+        .user-badge {
+          width: 32px;
+          height: 32px;
+          background-color: var(--accent);
+          border-radius: 999px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          font-weight: 600;
+          cursor: pointer;
+          color: var(--accent-foreground);
+        }
+
+        .sub-header {
+          background-color: var(--secondary);
+          height: 52px;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          padding: 0 32px;
+          color: var(--secondary-foreground);
+          border-bottom: 1px solid var(--border);
+          font-size: 13px;
+        }
+
+        .lang-select {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          cursor: pointer;
+          white-space: nowrap;
+        }
+
+        .main-layout {
+          display: flex;
+          flex: 1;
+          background-color: var(--muted);
+        }
+
+        .sidebar {
+          width: 260px;
+          background-color: var(--sidebar);
+          border-right: 1px solid var(--border);
+          padding: 20px 16px;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          flex-shrink: 0;
+        }
+
+        .content-area {
+          flex: 1;
+          padding: 24px 48px 40px 40px;
+          max-width: 100%;
+          background-color: var(--background);
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+        }
+      </style>
+
+      <style id="components-styles">
+        .sidebar-close-btn {
+          background-color: var(--sidebar-primary);
+          width: 28px;
+          height: 28px;
+          border-radius: var(--radius-sm);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--sidebar-primary-foreground);
+          cursor: pointer;
+        }
+
+        .sidebar-section-title {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-weight: 600;
+          color: var(--sidebar-foreground);
+          font-size: 14px;
+          margin: 8px 0 4px 0;
+          cursor: pointer;
+          white-space: nowrap;
+        }
+
+        .sidebar-list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          padding-left: 20px;
+        }
+
+        .sidebar-item {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 13px;
+          color: var(--muted-foreground);
+          cursor: pointer;
+        }
+
+        .sidebar-item::before {
+          content: "";
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          border: 1px solid var(--muted-foreground);
+          display: block;
+        }
+
+        .breadcrumbs {
+          font-size: 13px;
+          color: var(--muted-foreground);
+          display: flex;
+          gap: 8px;
+          align-items: center;
+        }
+
+        .breadcrumb-link {
+          color: var(--accent);
+          text-decoration: none;
+          cursor: pointer;
+          white-space: nowrap;
+        }
+
+        .breadcrumb-sep {
+          color: var(--muted-foreground);
+        }
+
+        .page-title {
+          font-size: 24px;
+          font-weight: 600;
+          color: var(--foreground);
+          margin: 4px 0 0 0;
+        }
+
+        .tabs {
+          display: flex;
+          gap: 24px;
+          border-bottom: 1px solid var(--border);
+          padding-top: 8px;
+        }
+
+        .tab-item {
+          padding: 10px 0 10px 0;
+          font-size: 14px;
+          color: var(--muted-foreground);
+          cursor: pointer;
+          position: relative;
+          white-space: nowrap;
+        }
+
+        .tab-item.active {
+          color: var(--foreground);
+          font-weight: 500;
+        }
+
+        .tab-item.active::after {
+          content: "";
+          position: absolute;
+          bottom: -1px;
+          left: 0;
+          width: 100%;
+          height: 2px;
+          background-color: var(--primary);
+        }
+
+        .content-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-top: 8px;
+        }
+
+        .section-name {
+          font-size: 18px;
+          color: var(--foreground);
+          font-weight: 500;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .collapse-link {
+          font-size: 13px;
+          color: var(--primary);
+          cursor: pointer;
+          white-space: nowrap;
+        }
+
+        .activity-list {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .activity-card {
+          border-radius: var(--radius-md);
+          background: var(--card);
+          border: 1px solid var(--border);
+          padding: 16px 18px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+        }
+
+        .activity-left {
+          display: flex;
+          gap: 16px;
+          align-items: center;
+        }
+
+        .activity-icon-box {
+          width: 40px;
+          height: 40px;
+          border-radius: var(--radius-sm);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #ffffff;
+          flex-shrink: 0;
+        }
+
+        .bg-orange {
+          background-color: var(--warning);
+        }
+
+        .bg-blue {
+          background-color: var(--primary);
+        }
+
+        .activity-details {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+
+        .activity-type {
+          font-size: 10px;
+          text-transform: uppercase;
+          color: var(--muted-foreground);
+          font-weight: 600;
+        }
+
+        .activity-title {
+          font-size: 14px;
+          color: var(--primary);
+          font-weight: 500;
+          cursor: pointer;
+        }
+
+        .mark-done-btn {
+          border-radius: 999px;
+          padding: 6px 14px;
+          font-size: 12px;
+          color: var(--foreground);
+          background: var(--muted);
+          border: 1px solid var(--border);
+          cursor: pointer;
+          white-space: nowrap;
+        }
+      </style>
+
+      <style id="footer-styles">
+        .footer {
+          border-top: 1px solid var(--border);
+          padding: 24px 32px 28px 32px;
+          background: var(--background);
+          margin-top: auto;
+        }
+
+        .footer-content {
+          max-width: 1200px;
+          margin: 0 auto;
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          font-size: 13px;
+          color: var(--muted-foreground);
+          gap: 32px;
+        }
+
+        .footer-col {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+        }
+
+        .footer-link {
+          text-decoration: underline;
+          cursor: pointer;
+          color: var(--muted-foreground);
+          white-space: nowrap;
+        }
+
+        .social-icon {
+          width: 32px;
+          height: 32px;
+          background-color: #1877f2;
+          border-radius: var(--radius-sm);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #ffffff;
+          cursor: pointer;
+        }
+
+        .content-shell {
+          position: relative;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          min-height: 812px;
+        }
+
+        .floating-help {
+          position: absolute;
+          bottom: 24px;
+          right: 24px;
+          width: 40px;
+          height: 40px;
+          background-color: var(--primary);
+          border-radius: 999px;
+          color: var(--primary-foreground);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="page-root">
+        <nav class="top-nav">
+          <div class="nav-left">
+            <a class="nav-link" data-media-type="banani-button">Home</a>
+            <a class="nav-link" data-media-type="banani-button">Dashboard</a>
+            <a class="nav-link" data-media-type="banani-button">My courses</a>
+          </div>
+          <div class="nav-right">
+            <div data-media-type="banani-button">
+              <iconify-icon
+                icon="lucide:message-square"
+                style="font-size: 18px"
+              ></iconify-icon>
+            </div>
+            <div class="user-badge" data-media-type="banani-button">P</div>
+          </div>
+        </nav>
+
+        <div class="sub-header">
+          <div class="lang-select" data-media-type="banani-button">
+            ENGLISH (EN)
+            <iconify-icon
+              icon="lucide:chevron-down"
+              style="font-size: 14px"
+            ></iconify-icon>
+          </div>
+        </div>
+
+        <div class="content-shell">
+          <div class="main-layout">
+            <aside class="sidebar">
+              <div class="sidebar-close-btn" data-media-type="banani-button">
+                <iconify-icon
+                  icon="lucide:x"
+                  style="font-size: 18px"
+                ></iconify-icon>
+              </div>
+
+              <div>
+                <div
+                  class="sidebar-section-title"
+                  data-media-type="banani-button"
+                >
+                  <iconify-icon
+                    icon="lucide:chevron-down"
+                    style="font-size: 16px"
+                  ></iconify-icon>
+                  General
+                </div>
+                <ul class="sidebar-list">
+                  <li class="sidebar-item" data-media-type="banani-button">
+                    Announcements
+                  </li>
+                  <li class="sidebar-item" data-media-type="banani-button">
+                    Slides Pháp luật đại cương
+                  </li>
+                  <li class="sidebar-item" data-media-type="banani-button">
+                    Đề cương-Pháp luật đại cương...
+                  </li>
+                </ul>
+              </div>
+            </aside>
+
+            <main class="content-area">
+              <div>
+                <div class="breadcrumbs">
+                  <a class="breadcrumb-link" data-media-type="banani-button"
+                    >Khoa Luật</a
+                  >
+                  <span class="breadcrumb-sep">/</span>
+                  <a class="breadcrumb-link" data-media-type="banani-button"
+                    >Khoa Luật - BM Pháp luật cơ sở</a
+                  >
+                  <span class="breadcrumb-sep">/</span>
+                  <span>HK01-22-23-006</span>
+                </div>
+                <h1 class="page-title">221LAW01A05-Pháp luật đại cương</h1>
+              </div>
+
+              <div class="tabs">
+                <div class="tab-item active" data-media-type="banani-button">
+                  Course
+                </div>
+                <div class="tab-item" data-media-type="banani-button">
+                  Participants
+                </div>
+                <div class="tab-item" data-media-type="banani-button">
+                  Grades
+                </div>
+                <div class="tab-item" data-media-type="banani-button">
+                  Competencies
+                </div>
+              </div>
+
+              <div class="content-header">
+                <div class="section-name">
+                  <iconify-icon
+                    icon="lucide:chevron-down"
+                    style="font-size: 18px"
+                  ></iconify-icon>
+                  General
+                </div>
+                <div class="collapse-link" data-media-type="banani-button">
+                  Collapse all
+                </div>
+              </div>
+
+              <div class="activity-list">
+                <div class="activity-card">
+                  <div class="activity-left">
+                    <div class="activity-icon-box bg-orange">
+                      <iconify-icon
+                        icon="lucide:message-square-text"
+                        style="font-size: 22px"
+                      ></iconify-icon>
+                    </div>
+                    <div class="activity-details">
+                      <span class="activity-type">FORUM</span>
+                      <span
+                        class="activity-title"
+                        data-media-type="banani-button"
+                        >Announcements</span
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <div class="activity-card">
+                  <div class="activity-left">
+                    <div class="activity-icon-box bg-blue">
+                      <iconify-icon
+                        icon="lucide:folder"
+                        style="font-size: 22px"
+                      ></iconify-icon>
+                    </div>
+                    <div class="activity-details">
+                      <span class="activity-type">FOLDER</span>
+                      <span
+                        class="activity-title"
+                        data-media-type="banani-button"
+                        >Slides Pháp luật đại cương</span
+                      >
+                    </div>
+                  </div>
+                  <button class="mark-done-btn" data-media-type="banani-button">
+                    Mark as done
+                  </button>
+                </div>
+
+                <div class="activity-card">
+                  <div class="activity-left">
+                    <div class="activity-icon-box bg-blue">
+                      <iconify-icon
+                        icon="lucide:folder"
+                        style="font-size: 22px"
+                      ></iconify-icon>
+                    </div>
+                    <div class="activity-details">
+                      <span class="activity-type">FOLDER</span>
+                      <span
+                        class="activity-title"
+                        data-media-type="banani-button"
+                        >Đề cương-Pháp luật đại cương</span
+                      >
+                    </div>
+                  </div>
+                  <button class="mark-done-btn" data-media-type="banani-button">
+                    Mark as done
+                  </button>
+                </div>
+              </div>
+            </main>
+          </div>
+
+          <footer class="footer">
+            <div class="footer-content">
+              <div class="footer-col">
+                <span class="footer-link" data-media-type="banani-button"
+                  >Website Trường</span
+                >
+                <span class="footer-link" data-media-type="banani-button"
+                  >Cổng thông tin đào tạo</span
+                >
+                <span class="footer-link" data-media-type="banani-button"
+                  >Trang tuyển sinh</span
+                >
+                <span class="footer-link" data-media-type="banani-button"
+                  >Moodle.com</span
+                >
+              </div>
+
+              <div class="footer-col">
+                <span>Số 12, đường Chùa Bộc, Quận Đống Đa, Hà Nội</span>
+                <span>📞 : +84 243 852 1305</span>
+                <span>✉️ : truyenthong@hvnh.edu.vn</span>
+              </div>
+
+              <div class="footer-col">
+                <div class="social-icon" data-media-type="banani-button">
+                  <iconify-icon
+                    icon="lucide:facebook"
+                    style="font-size: 18px"
+                  ></iconify-icon>
+                </div>
+              </div>
+            </div>
+          </footer>
+
+          <div class="floating-help" data-media-type="banani-button">
+            <iconify-icon
+              icon="lucide:help-circle"
+              style="font-size: 22px"
+            ></iconify-icon>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    </body>
+  </html>
+  <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+  <style>
+    :root {
+      --background: #ffffff;
+      --foreground: #0b2a3a;
+      --border: #00000014;
+      --input: #f7f9fa;
+      --primary: #0ea5e9;
+      --primary-foreground: #ffffff;
+      --secondary: #f1f8fb;
+      --secondary-foreground: #0b2a3a;
+      --muted: #f3f4f6;
+      --muted-foreground: #6b7280;
+      --success: #10b981;
+      --success-foreground: #ffffff;
+      --accent: #e11d48;
+      --accent-foreground: #ffffff;
+      --destructive: #ef4444;
+      --destructive-foreground: #ffffff;
+      --warning: #f59e0b;
+      --warning-foreground: #0b2a3a;
+      --card: #ffffff;
+      --card-foreground: #0b2a3a;
+      --sidebar: #f8fafb;
+      --sidebar-foreground: #0b2a3a;
+      --sidebar-primary: #0ea5e9;
+      --sidebar-primary-foreground: #ffffff;
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-lg: 8px;
+      --radius-xl: 12px;
+      --font-family-body: Inter;
+    }
+  </style>
+</div>

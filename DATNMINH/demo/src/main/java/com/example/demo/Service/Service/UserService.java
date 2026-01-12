@@ -37,5 +37,7 @@ public interface UserService {
     List<CourseResponse> getMyCourses(User user);
 
     List<UserResponse> getStudentsByCourseId(Integer courseId);
+
+    UserResponse getStudentById(Integer id);
 }
 

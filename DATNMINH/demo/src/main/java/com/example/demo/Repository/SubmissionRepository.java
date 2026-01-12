@@ -17,4 +17,5 @@ public interface SubmissionRepository extends JpaRepository<Submission, Integer>
     boolean existsByAssignment_AssignmentIdAndStudent_Id(Integer assignmentId, Integer studentId);
     
     Optional<Submission> findByAssignment_AssignmentIdAndStudent_Id(Integer assignmentId, Integer studentId);
+    Integer countByAssignment_AssignmentId(Integer assignmentId);
 }

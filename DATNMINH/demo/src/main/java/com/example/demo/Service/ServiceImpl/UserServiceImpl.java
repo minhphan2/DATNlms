@@ -102,7 +102,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse getMe(User user) {
-        return userMapper.toResponse(user);
+            User freshUser = userRepository.findById(user.getId())
+        .orElseThrow(() -> new RuntimeException("User not found"));
+        return userMapper.toResponse(freshUser);
     }
 
     @Override
@@ -120,6 +122,13 @@ public class UserServiceImpl implements UserService {
         return students.stream()
         .map(userMapper::toResponse)
         .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserResponse getStudentById(Integer id){
+        User student = userRepository.findByIdAndRole(id, User.Role.student)
+        .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
+        return userMapper.toResponse(student);
     }
 
 }

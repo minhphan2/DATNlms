@@ -140,29 +140,7 @@ function TeacherCourseDetail() {
             </div>
           </div>
         </div>
-        {/* Footer */}
-        <footer style={{
-          textAlign: "center",
-          color: "#888",
-          fontSize: 14,
-          margin: "32px 0 0 0",
-          background: "#fff",
-          borderTop: "1px solid #e5eaf2",
-          padding: "16px 0"
-        }}>
-          <div>
-            <span className="footer-link" style={{ marginRight: 16 }}>Website Trường</span>
-            <span className="footer-link" style={{ marginRight: 16 }}>Cổng thông tin đào tạo</span>
-            <span className="footer-link" style={{ marginRight: 16 }}>Trang tuyển sinh</span>
-            <span className="footer-link">Moodle.com</span>
-          </div>
-          <div style={{ marginTop: 8 }}>
-            Số 12, đường Chùa Bộc, Quận Đống Đa, Hà Nội | 📞 +84 243 852 1305 | ✉️ truyenthong@hvnh.edu.vn
-          </div>
-          <div style={{ marginTop: 8 }}>
-            <Icon icon="lucide:facebook" style={{ fontSize: 18, marginRight: 8 }} />
-          </div>
-        </footer>
+      
         {/* Floating Help */}
         <div style={{
           position: "fixed",

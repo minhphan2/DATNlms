@@ -30,6 +30,10 @@ function StudentLoginComponent() {
                 navigate('/teacher/dashboard');
                 return;
             }
+            if (role === 'ADMIN') {
+                navigate('/admin/users');
+                return;
+            }
             else navigate('/student/dashboard');
         } catch (error) {
             setError('Sai tài khoản hoặc mật khẩu');

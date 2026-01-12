@@ -8,6 +8,7 @@ import com.example.demo.DTO.CourseRequest.CreateRequest;
 import com.example.demo.DTO.CourseRequest.UpdateRequest;
 
 
+
 @Service
 public interface CourseService {
 
@@ -17,4 +18,8 @@ public interface CourseService {
     CourseResponse updateCourse(Integer id, UpdateRequest request);
 
     CourseResponse getCourseById(Integer id);
+
+    List<CourseResponse> getCourseByDepartmentId(Integer id);
+
+    List<CourseResponse> getCoursesByDepartment(com.example.demo.model.User user);
 }

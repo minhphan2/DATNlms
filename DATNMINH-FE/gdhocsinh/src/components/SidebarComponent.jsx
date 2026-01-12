@@ -25,8 +25,9 @@ const SidebarComponent = () => {
   // Menu cho từng role
   const menusStudent = [
     { label: "Dashboard", icon: "lucide:layout-dashboard", path: "/student/dashboard" },
-    { label: "My Courses", icon: "lucide:book-open", path: "/my-courses" },
-    { label: "Schedule", icon: "lucide:calendar", path: "/schedule" },
+    { label: "Khóa Học Của Tôi", icon: "lucide:book-open", path: "/my-courses" },
+    { label: "Thời Khóa Biểu", icon: "lucide:calendar", path: "/schedule" },
+    { label: "Đăng Ký Khóa Học", icon: "lucide:plus-circle", path: "/register-course" },
   ];
   const menusTeacher = [
     { label: "Dashboard", icon: "lucide:layout-dashboard", path: "/teacher/dashboard" },
@@ -34,7 +35,7 @@ const SidebarComponent = () => {
     { label: "Quản lý bài tập", icon: "lucide:clipboard-list", path: "/teacher/assignments" },
   ];
   const menusAdmin = [
-    { label: "Dashboard", icon: "lucide:layout-dashboard", path: "/admin" },
+    { label: "Quản lý khoa", icon: "lucide:layout-dashboard", path: "/admin/departments" },
     { label: "Quản lý người dùng", icon: "lucide:users", path: "/admin/users" },
     { label: "Quản lý khóa học", icon: "lucide:book", path: "/admin/courses" },
   ];
